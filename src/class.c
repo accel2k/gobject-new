@@ -6,10 +6,8 @@ enum
   PROP_A
 };
 
-struct _@Type@@Class@
+struct _@Type@@Class@Private
 {
-  GObject                      parent_instance;
-
   gint                         prop_a;
 };
 
@@ -24,7 +22,8 @@ static void    @type@_@class@_get_property             (GObject               *o
 static void    @type@_@class@_object_constructed       (GObject               *object);
 static void    @type@_@class@_object_finalize          (GObject               *object);
 
-G_DEFINE_TYPE (@Type@@Class@, @type@_@class@, G_TYPE_OBJECT);
+/* !!! Change G_TYPE_OBJECT to type of the base class. !!! */
+G_DEFINE_TYPE_WITH_PRIVATE (@Type@@Class@, @type@_@class@, G_TYPE_OBJECT)
 
 static void @type@_@class@_class_init (@Type@@Class@Class *klass)
 {
@@ -44,6 +43,7 @@ static void @type@_@class@_class_init (@Type@@Class@Class *klass)
 static void
 @type@_@class@_init (@Type@@Class@ *@class@)
 {
+  @class@->priv = @type@_@class@_get_instance_private (@class@);
 }
 
 static void
@@ -53,11 +53,12 @@ static void
                              GParamSpec   *pspec)
 {
   @Type@@Class@ *@class@ = @TYPE@_@CLASS@ (object);
+  @Type@@Class@Private *priv = @class@->priv;
 
   switch (prop_id)
     {
     case PROP_A:
-      @class@->prop_a = g_value_get_int (value);
+      priv->prop_a = g_value_get_int (value);
       break;
 
     default:
@@ -73,11 +74,12 @@ static void
                              GParamSpec *pspec)
 {
   @Type@@Class@ *@class@ = @TYPE@_@CLASS@ (object);
+  @Type@@Class@Private *priv = @class@->priv;
 
   switch ( prop_id )
     {
     case PROP_A:
-      g_value_set_int (value, @class@->prop_a);
+      g_value_set_int (value, priv->prop_a);
       break;
 
     default:
@@ -90,14 +92,22 @@ static void
 @type@_@class@_object_constructed (GObject *object)
 {
   @Type@@Class@ *@class@ = @TYPE@_@CLASS@ (object);
+  @Type@@Class@Private *priv = @class@->priv;
+
+  /* Remove this call then class is derived from GObject.
+     This call is strongly needed then class is derived from GtkWidget. */
+  G_OBJECT_CLASS (@type@_@class@_parent_class)->constructed (object);
+
+  priv->prop_a = 1;
 }
 
 static void
 @type@_@class@_object_finalize (GObject *object)
 {
   @Type@@Class@ *@class@ = @TYPE@_@CLASS@ (object);
+  @Type@@Class@Private *priv = @class@->priv;
 
-  @class@->prop_a = 0;
+  priv->prop_a = 0;
 
   G_OBJECT_CLASS (@type@_@class@_parent_class)->finalize (object);
 }
@@ -106,11 +116,19 @@ void
 @type@_@class@_set_a (@Type@@Class@ *@class@,
                       gint           a)
 {
-  @class@->prop_a = a;
+  @Type@@Class@Private *priv = @class@->priv;
+
+  g_return_if_fail (@TYPE@_IS_@CLASS@ (@class@));
+
+  priv->prop_a = a;
 }
 
 gint
 @type@_@class@_get_a (@Type@@Class@ *@class@)
 {
-  return @class@->prop_a;
+  @Type@@Class@Private *priv = @class@->priv;
+
+  g_return_val_if_fail (@TYPE@_IS_@CLASS@ (@class@), -1);
+
+  return priv->prop_a;
 }

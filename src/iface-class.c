@@ -6,10 +6,8 @@ enum
   PROP_A
 };
 
-struct _@Type@@Class@
+struct _@Type@@Class@Private
 {
-  GObject                      parent_instance;
-
   gint                         prop_a;
 };
 
@@ -26,7 +24,8 @@ static void    @type@_@class@_object_constructed       (GObject                *
 static void    @type@_@class@_object_finalize          (GObject                *object);
 
 G_DEFINE_TYPE_WITH_CODE (@Type@@Class@, @type@_@class@, G_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (@TYPE@_TYPE_@IFACE@, @type@_@class@_interface_init));
+                         G_ADD_PRIVATE (@Type@@Class@)
+                         G_IMPLEMENT_INTERFACE (@TYPE@_TYPE_@IFACE@, @type@_@class@_interface_init))
 
 static void @type@_@class@_class_init (@Type@@Class@Class *klass)
 {
@@ -46,6 +45,7 @@ static void @type@_@class@_class_init (@Type@@Class@Class *klass)
 static void
 @type@_@class@_init (@Type@@Class@ *@class@)
 {
+  @class@->priv = @type@_@class@_get_instance_private (@class@);
 }
 
 static void
@@ -55,11 +55,12 @@ static void
                              GParamSpec   *pspec)
 {
   @Type@@Class@ *@class@ = @TYPE@_@CLASS@ (object);
+  @Type@@Class@Private *priv = @class@->priv;
 
   switch (prop_id)
     {
     case PROP_A:
-      @class@->prop_a = g_value_get_int (value);
+      priv->prop_a = g_value_get_int (value);
       break;
 
     default:
@@ -75,11 +76,12 @@ static void
                              GParamSpec *pspec)
 {
   @Type@@Class@ *@class@ = @TYPE@_@CLASS@ (object);
+  @Type@@Class@Private *priv = @class@->priv;
 
   switch ( prop_id )
     {
     case PROP_A:
-      g_value_set_int (value, @class@->prop_a);
+      g_value_set_int (value, priv->prop_a);
       break;
 
     default:
@@ -92,14 +94,22 @@ static void
 @type@_@class@_object_constructed (GObject *object)
 {
   @Type@@Class@ *@class@ = @TYPE@_@CLASS@ (object);
+  @Type@@Class@Private *priv = @class@->priv;
+
+  /* Remove this call then class is derived from GObject.
+     This call is strongly needed then class is derived from GtkWidget. */
+  G_OBJECT_CLASS (@type@_@class@_parent_class)->constructed (object);
+
+  priv->prop_a = 1;
 }
 
 static void
 @type@_@class@_object_finalize (GObject *object)
 {
   @Type@@Class@ *@class@ = @TYPE@_@CLASS@ (object);
+  @Type@@Class@Private *priv = @class@->priv;
 
-  @class@->prop_a = 0;
+  priv->prop_a = 0;
 
   G_OBJECT_CLASS (@type@_@class@_parent_class)->finalize (object);
 }
@@ -109,15 +119,18 @@ void
                       gint           a)
 {
   @Type@@Class@ *@class@ = @TYPE@_@CLASS@ (@iface-name@);
+  @Type@@Class@Private *priv = @class@->priv;
 
-  @class@->prop_a = a;
+  priv->prop_a = a;
 }
 
 gint
 @type@_@class@_get_a (@Type@@Iface@ *@iface-name@)
 {
   @Type@@Class@ *@class@ = @TYPE@_@CLASS@ (@iface-name@);
-  return @class@->prop_a;
+  @Type@@Class@Private *priv = @class@->priv;
+
+  return priv->prop_a;
 }
 
 static void

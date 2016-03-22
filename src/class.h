@@ -13,8 +13,18 @@ G_BEGIN_DECLS
 #define @TYPE@_@CLASS@_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), @TYPE@_TYPE_@CLASS@, @Type@@Class@Class))
 
 typedef struct _@Type@@Class@ @Type@@Class@;
+typedef struct _@Type@@Class@Private @Type@@Class@Private;
 typedef struct _@Type@@Class@Class @Type@@Class@Class;
 
+/* !!! Change GObject to type of the base class. !!! */
+struct _@Type@@Class@
+{
+  GObject parent_instance;
+
+  @Type@@Class@Private *priv;
+};
+
+/* !!! Change GObjectClass to type of the base class. !!! */
 struct _@Type@@Class@Class
 {
   GObjectClass parent_class;
