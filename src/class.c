@@ -117,9 +117,11 @@ void
 @type@_@class@_set_a (@Type@@Class@ *@class@,
                       gint           a)
 {
-  @Type@@Class@Private *priv = @class@->priv;
+  @Type@@Class@Private *priv;
 
   g_return_if_fail (@TYPE@_IS_@CLASS@ (@class@));
+
+  priv = @class@->priv;
 
   priv->prop_a = a;
 }
@@ -127,9 +129,7 @@ void
 gint
 @type@_@class@_get_a (@Type@@Class@ *@class@)
 {
-  @Type@@Class@Private *priv = @class@->priv;
-
   g_return_val_if_fail (@TYPE@_IS_@CLASS@ (@class@), -1);
 
-  return priv->prop_a;
+  return @class@->priv->prop_a;
 }

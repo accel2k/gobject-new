@@ -129,9 +129,8 @@ static gint
 @type@_@class@_get_a (@Type@@Iface@ *@iface-name@)
 {
   @Type@@Class@ *@class@ = @TYPE@_@CLASS@ (@iface-name@);
-  @Type@@Class@Private *priv = @class@->priv;
 
-  return priv->prop_a;
+  return @class@->priv->prop_a;
 }
 
 static void
