@@ -114,7 +114,7 @@ static void
   G_OBJECT_CLASS (@type@_@class@_parent_class)->finalize (object);
 }
 
-void
+static void
 @type@_@class@_set_a (@Type@@Iface@ *@iface-name@,
                       gint           a)
 {
@@ -124,7 +124,7 @@ void
   priv->prop_a = a;
 }
 
-gint
+static gint
 @type@_@class@_get_a (@Type@@Iface@ *@iface-name@)
 {
   @Type@@Class@ *@class@ = @TYPE@_@CLASS@ (@iface-name@);
