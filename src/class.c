@@ -25,7 +25,8 @@ static void    @type@_@class@_object_finalize          (GObject               *o
 /* !!! Change G_TYPE_OBJECT to type of the base class. !!! */
 G_DEFINE_TYPE_WITH_PRIVATE (@Type@@Class@, @type@_@class@, G_TYPE_OBJECT)
 
-static void @type@_@class@_class_init (@Type@@Class@Class *klass)
+static void
+@type@_@class@_class_init (@Type@@Class@Class *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 

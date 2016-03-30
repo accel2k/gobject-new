@@ -27,7 +27,8 @@ G_DEFINE_TYPE_WITH_CODE (@Type@@Class@, @type@_@class@, G_TYPE_OBJECT,
                          G_ADD_PRIVATE (@Type@@Class@)
                          G_IMPLEMENT_INTERFACE (@TYPE@_TYPE_@IFACE@, @type@_@class@_interface_init))
 
-static void @type@_@class@_class_init (@Type@@Class@Class *klass)
+static void
+@type@_@class@_class_init (@Type@@Class@Class *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
