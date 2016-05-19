@@ -116,19 +116,19 @@ static void
 }
 
 static void
-@type@_@class@_set_a (@Type@@Iface@ *@iface-name@,
+@type@_@class@_set_a (@Type@@Iface@ *@iface@,
                       gint           a)
 {
-  @Type@@Class@ *@class@ = @TYPE@_@CLASS@ (@iface-name@);
+  @Type@@Class@ *@class@ = @TYPE@_@CLASS@ (@iface@);
   @Type@@Class@Private *priv = @class@->priv;
 
   priv->prop_a = a;
 }
 
 static gint
-@type@_@class@_get_a (@Type@@Iface@ *@iface-name@)
+@type@_@class@_get_a (@Type@@Iface@ *@iface@)
 {
-  @Type@@Class@ *@class@ = @TYPE@_@CLASS@ (@iface-name@);
+  @Type@@Class@ *@class@ = @TYPE@_@CLASS@ (@iface@);
 
   return @class@->priv->prop_a;
 }

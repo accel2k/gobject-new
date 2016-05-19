@@ -40,6 +40,7 @@ class_u=`echo "${class}" | sed 's/.*/\U&/g'`
 class_n=`echo "${class}" | sed 's/_/-/g' | sed 's/.*/\L&/g'`
 class=`echo "${class}" | sed 's/_//g'`
 
+iface_l=`echo "${iface}" | sed 's/.*/\L&/g'`
 iface_u=`echo "${iface}" | sed 's/.*/\U&/g'`
 iface_n=`echo "${iface}" | sed 's/_/-/g' | sed 's/.*/\L&/g'`
 iface=`echo "${iface}" | sed 's/_//g'`
@@ -71,5 +72,6 @@ sed "s:@Iface@:${iface}:g" -i "${file_name}.h"
 sed "s:@IFACE@:${iface_u}:g" -i "${file_name}.h"
 sed "s:@iface-name@:${iface_n}:g" -i "${file_name}.h"
 sed "s:@Iface@:${iface}:g" -i "${file_name}.c"
+sed "s:@iface@:${iface_l}:g" -i "${file_name}.c"
 sed "s:@IFACE@:${iface_u}:g" -i "${file_name}.c"
 sed "s:@iface-name@:${iface_n}:g" -i "${file_name}.c"
