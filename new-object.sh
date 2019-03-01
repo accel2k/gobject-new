@@ -45,10 +45,11 @@ iface_u=`echo "${iface}" | sed 's/.*/\U&/g'`
 iface_n=`echo "${iface}" | sed 's/_/-/g' | sed 's/.*/\L&/g'`
 iface=`echo "${iface}" | sed 's/_//g'`
 
+DIR="$(dirname "$(readlink -f "$0")")"
 file_name="${type_n}-${class_n}"
 
-cp "src/${src}.h" "${file_name}.h" || exit
-cp "src/${src}.c" "${file_name}.c" || exit
+cp "${DIR}/src/${src}.h" "${file_name}.h" || exit
+cp "${DIR}/src/${src}.c" "${file_name}.c" || exit
 
 sed "s:@Type@:${type}:g" -i "${file_name}.h"
 sed "s:@type@:${type_l}:g" -i "${file_name}.h"

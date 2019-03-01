@@ -31,10 +31,11 @@ iface_u=`echo "${iface}" | sed 's/.*/\U&/g'`
 iface_n=`echo "${iface}" | sed 's/_/-/g' | sed 's/.*/\L&/g'`
 iface=`echo "${iface}" | sed 's/_//g'`
 
+DIR="$(dirname "$(readlink -f "$0")")"
 file_name="${type_n}-${iface_n}"
 
-cp "src/iface.h" "${file_name}.h"
-cp "src/iface.c" "${file_name}.c"
+cp "${DIR}/src/iface.h" "${file_name}.h" || exit
+cp "${DIR}/src/iface.c" "${file_name}.c" || exit
 
 sed "s:@Type@:${type}:g" -i "${file_name}.h"
 sed "s:@type@:${type_l}:g" -i "${file_name}.h"
