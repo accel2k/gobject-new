@@ -1,9 +1,12 @@
 #!/bin/bash
 
-usage() { echo "usage: $0 -t <TypeName> -i <IfaceName>"; exit 1; }
+usage() { echo "usage: $0 [-g] -t <TypeName> -i <IfaceName>"; exit 1; }
 
-while getopts ":t:i:" o; do
+while getopts ":gt:i:" o; do
     case "${o}" in
+        g)
+            gui="1"
+            ;;
         t)
             type="${OPTARG}"
             ;;
@@ -16,6 +19,24 @@ while getopts ":t:i:" o; do
     esac
 done
 shift $((OPTIND-1))
+
+if [ "${gui}" ]; then
+    OUTPUT=$(zenity --forms \
+                    --title="Add GObject Interface" \
+                    --text="Options" \
+                    --separator="," \
+                    --add-entry TypeName \
+                    --add-entry IfaceName)
+
+    accepted=$?
+    if ((accepted != 0)); then
+        echo "User canceled"
+        exit 1
+    fi
+
+    type=$(awk -F, '{print $1}' <<<$OUTPUT)
+    iface=$(awk -F, '{print $2}' <<<$OUTPUT)
+fi
 
 if [ -z "${type}" ] || [ -z "${iface}" ]; then
     usage

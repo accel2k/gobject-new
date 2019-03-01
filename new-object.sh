@@ -1,9 +1,12 @@
 #!/bin/bash
 
-usage() { echo "usage: $0 -t <TypeName> -c <ClassName> [-i <IfaceName>]"; exit 1; }
+usage() { echo "usage: $0 [-g] -t <TypeName> -c <ClassName> [-i <IfaceName>]"; exit 1; }
 
-while getopts ":t:c:i:" o; do
+while getopts ":gt:c:i:" o; do
     case "${o}" in
+        g)
+            gui="1"
+            ;;
         t)
             type="${OPTARG}"
             ;;
@@ -19,6 +22,26 @@ while getopts ":t:c:i:" o; do
     esac
 done
 shift $((OPTIND-1))
+
+if [ "${gui}" ]; then
+    OUTPUT=$(zenity --forms \
+                    --title="Add GObject Class" \
+                    --text="Options" \
+                    --separator="," \
+                    --add-entry TypeName \
+                    --add-entry ClassName \
+                    --add-entry "IfaceName (optional)")
+
+    accepted=$?
+    if ((accepted != 0)); then
+        echo "User canceled"
+        exit 1
+    fi
+
+    type=$(awk -F, '{print $1}' <<<$OUTPUT)
+    class=$(awk -F, '{print $2}' <<<$OUTPUT)
+    iface=$(awk -F, '{print $3}' <<<$OUTPUT)
+fi
 
 if [ -z "${type}" ] || [ -z "${class}" ]; then
     usage
