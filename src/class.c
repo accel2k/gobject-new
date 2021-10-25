@@ -95,8 +95,8 @@ static void
   @Type@@Class@ *@class@ = @TYPE@_@CLASS@ (object);
   @Type@@Class@Private *priv = @class@->priv;
 
-  /* Remove this call then class is derived from GObject.
-     This call is strongly needed then class is derived from GtkWidget. */
+  /* Remove this call if class is derived from GObject.
+     This call is needed if class is derived from GtkWidget. */
   G_OBJECT_CLASS (@type@_@class@_parent_class)->constructed (object);
 
   priv->prop_a = 1;
